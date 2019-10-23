@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Prisma.Models.Competidor>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Marca.Codigo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Zona.Codigo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Codigo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Calle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Latitud)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Longitud)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Marcador)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Observar)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Marca.Codigo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Zona.Codigo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Codigo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Calle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Latitud)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Longitud)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Marcador)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Observar)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.CompetidorID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.CompetidorID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.CompetidorID })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,90 @@
+﻿@model Prisma.Models.Competidor
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Competidor</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Marca.Codigo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Marca.Codigo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Zona.Codigo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Zona.Codigo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Codigo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Codigo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Calle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Calle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Latitud)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Latitud)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Longitud)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Longitud)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Marcador)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Marcador)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Observar)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Observar)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.CompetidorID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

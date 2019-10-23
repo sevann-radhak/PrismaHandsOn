@@ -1,0 +1,247 @@
+﻿@*@model IEnumerable<Prisma.Models.Marca>*@
+
+@{
+    ViewBag.Title = "Marcas";
+}
+
+<h2>Marcas</h2>
+
+@using (Html.BeginForm())
+{
+    <button id="btnGetMarcas">Get Marcas</button>
+    <button id="btnGetMarca">Get Marca</button>
+    <button id="btnAddMarca">Add Marca</button>
+    <button id="btnUpdateMarca">Update Marca</button>
+    <button id="btnDeleteMarca">Delete Marca</button>
+
+    <br />
+    <br />
+
+    <input id="txtMarcaID" type="number" placeholder="ID" min="1" />
+    <input id="txtMarcaCodigo" type="text" placeholder="Codigo" />
+    <input id="txtMarcaNombre" type="text" placeholder="Nombre" />
+
+    <br />
+    <br />
+
+    <div class="col-md-12">
+        <div id="loading" style="width: 20%"><img src="~/Images/loader-gif.gif" /></div>
+    </div>
+
+    <label id="lblMessage"></label>
+}
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(function () {
+
+            // Capture all buttons 
+            // Get all Marcas
+            $('#btnGetMarcas').on('click', function () {
+                // Send AJAX call
+                $.ajax({
+                    type: "GET",
+                    url: '/api/MarcasAPI',
+                    datatype: 'json',
+                    cache: false,
+                    success: (function (data) {
+                        var outPut = '';
+                        for (var i = 0; i < data.length; i++) {
+                            outPut += '<hr /> <br>';
+                            outPut += '<b>MarcaID: </b>' + data[i].MarcaID + '<br>';
+                            outPut += '<b>Código: </b>' + data[i].Codigo + '<br>';
+                            outPut += '<b>Nombre: </b>' + data[i].Nombre + '<br>';
+                        }
+                        $("#lblMessage").html(outPut);
+                    }),
+                    error: (function (err) {
+                        $("#lblMessage").html("Ocurrió un error: " + JSON.stringify(err.status) + '. ' + JSON.stringify(err.statusText));
+                    })
+                });
+
+                return false;
+            });
+
+            // Get a single Marca
+            $('#btnGetMarca').on('click', function () {
+                // Verify if there is an ID sent by user
+                var marcaID = $('#txtMarcaID').val().trim();
+                if (marcaID == '') {
+                    $('#lblMessage').html('Debe ingresar un ID válido');
+                    return false;
+                }
+
+                // Send AJAX call
+                $.ajax({
+                    type: "GET",
+                    url: '/api/MarcasAPI/' + marcaID,
+                    datatype: 'json',
+                    cache: false,
+                    success: (function (data) {
+                        if (data != null) {
+                            var outPut = '<b>MarcaID: </b>' + data.MarcaID + '<br>' +
+                                '<b>Código: </b>' + data.Codigo + '<br>' +
+                                '<b>Nombre: </b>' + data.Nombre + '<br>';
+                            $("#lblMessage").html(outPut);
+                        }
+                        else {
+                            $('#lblMessage').html('No se encontraron resultados');
+                        }
+                    }),
+                    error: (function (err) {
+                        $("#lblMessage").html("Ocurrió un error: " + JSON.stringify(err.status) + '. ' + JSON.stringify(err.statusText));
+                    })
+                });
+                return false;
+            });
+
+            // Add a new Marca
+            $('#btnAddMarca').on('click', function () {
+                // Verify if there is Codigo sent by user
+                var marcaCodigo = $('#txtMarcaCodigo').val().trim();
+                if (marcaCodigo == '') {
+                    $('#lblMessage').html('Debe ingresar un código válido');
+                    return false;
+                }
+                // Verify if there is Nombre sent by user
+                var marcaNombre = $('#txtMarcaNombre').val().trim();
+                if (marcaNombre == '') {
+                    $('#lblMessage').html('Debe ingresar un nombre válido para la Marba');
+                    return false;
+                }
+
+                // Create the object
+                var marca = {
+                    Codigo: marcaCodigo,
+                    Nombre: marcaNombre
+                };
+
+                // Send AJAX call
+                $.ajax({
+                    type: "POST",
+                    url: '/api/MarcasAPI/',
+                    datatype: 'json',
+                    data: marca,
+                    cache: false,
+                    success: (function (data) {
+                        var outPut = '<h1>Objeto Creado exitosamente</h1>' +
+                            '<b>MarcaID: </b> ' + data.MarcaID + ' <br> ' +
+                            '<b>Código: </b>' + data.Codigo + '<br>' +
+                            '<b>Nombre: </b>' + data.Nombre + '<br>';
+                        $("#lblMessage").html(outPut);
+                    }),
+                    error: (function (err) {
+                        $("#lblMessage").html("Ocurrió un error: " + JSON.stringify(err.status) + '. ' + JSON.stringify(err.statusText));
+                    })
+                });
+                return false;
+            });
+
+            // Update a Marca
+            $('#btnUpdateMarca').on('click', function () {
+                // Verify if there is an ID sent by user
+                var marcaID = $('#txtMarcaID').val().trim();
+                if (marcaID == '') {
+                    $('#lblMessage').html('Debe ingresar un ID válido');
+                    return false;
+                }
+                // Verify if there is Codigo sent by user
+                var marcaCodigo = $('#txtMarcaCodigo').val().trim();
+                if (marcaCodigo == '') {
+                    $('#lblMessage').html('Debe ingresar un código válido');
+                    return false;
+                }
+                // Verify if there is Nombre sent by user
+                var marcaNombre = $('#txtMarcaNombre').val().trim();
+                if (marcaNombre == '') {
+                    $('#lblMessage').html('Debe ingresar un nombre válido para la Marca');
+                    return false;
+                }
+
+                // Create the object
+                var marca = {
+                    MarcaID: marcaID,
+                    Codigo: marcaCodigo,
+                    Nombre: marcaNombre
+                };
+
+                // Send AJAX call
+                $.ajax({
+                    type: "PUT",
+                    url: '/api/MarcasAPI/' + 18,
+                    datatype: 'json',
+                    data: marca,
+                    cache: false,
+                    success: (function () {
+                        $("#lblMessage").html('<h1>Objeto actualizado exitosamente</h1>');
+                    }),
+                    error: (function (err) {
+                        $("#lblMessage").html("Ocurrió un error: " + JSON.stringify(err.status) + '. ' + JSON.stringify(err.statusText));
+                    })
+                });
+                return false;
+            });
+
+            $('#btnDeleteMarca').on('click', function () {
+                // Verify if there is an ID sent by user
+                var marcaID = $('#txtMarcaID').val().trim();
+                if (marcaID == '') {
+                    $('#lblMessage').html('Debe ingresar un ID válido');
+                    return false;
+                }
+
+                // Send AJAX call
+                $.ajax({
+                    type: "DELETE",
+                    url: '/api/MarcasAPI/' + marcaID,
+                    datatype: 'json',
+                    cache: false,
+                    success: (function (data) {
+                        if (data != null) {
+                            var outPut = '<h1>Marca eliminada correctamente</h1>' + 
+                                '<b>MarcaID: </b>' + data.MarcaID + '<br>' +
+                                '<b>Código: </b>' + data.Codigo + '<br>' +
+                                '<b>Nombre: </b>' + data.Nombre + '<br>';
+                            $("#lblMessage").html(outPut);
+                        }
+                        else {
+                            $('#lblMessage').html('No se encontraron resultados');
+                        }
+                    }),
+                    error: (function (err) {
+                        $("#lblMessage").html("Ocurrió un error: " + JSON.stringify(err.status) + '. ' + JSON.stringify(err.statusText));
+                    })
+                });
+                return false;
+            });
+
+            // Loader
+            $(document).ajaxStart(function () {
+                $('#loading').show();
+            });
+            $(document).ajaxStop(function () {
+                $('#loading').hide();
+            });
+        });
+    </script>
+}
+
+<style type="text/css">
+    #loading {
+        display: none;
+        background-color: gray;
+        z-index: 999999;
+        /*position: absolute;*/
+        left: 0;
+        top: 0;
+        width: 20%;
+        height: 20%;
+        text-align: center;
+        /*padding-top: 300px;*/
+        filter: alpha(opacity=75);
+        -khtml-opacity: 0.75;
+        -moz-opacity: 0.75;
+        opacity: 0.75
+    }
+</style>
