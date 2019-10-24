@@ -28,10 +28,12 @@ namespace Prisma.Controllers
         public IHttpActionResult GetMarca(int id)
         {
             Marca marca = db.Marcas.Find(id);
-            //if (marca == null)
-            //{
-            //    return NotFound();
-            //}
+
+            // 404 not found
+            if (marca == null)
+            {
+                return NotFound();
+            }
 
             return Ok(marca);
         }
