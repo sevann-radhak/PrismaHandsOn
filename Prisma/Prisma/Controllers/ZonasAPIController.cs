@@ -13,46 +13,44 @@ using Prisma.Models;
 
 namespace Prisma.Controllers
 {
-    public class MarcasAPIController : ApiController
+    public class ZonasAPIController : ApiController
     {
         private PrismaContext db = new PrismaContext();
 
-        // GET: api/MarcasAPI
-        public IQueryable<Marca> GetMarcas()
+        // GET: api/ZonasAPI
+        public IHttpActionResult GetZonas()
         {
-            return db.Marcas;
+            return Ok(db.Zonas.ToList());
         }
 
-        // GET: api/MarcasAPI/5
-        [ResponseType(typeof(Marca))]
-        public IHttpActionResult GetMarca(int id)
+        // GET: api/ZonasAPI/5
+        [ResponseType(typeof(Zona))]
+        public IHttpActionResult GetZona(int id)
         {
-            Marca marca = db.Marcas.Find(id);
-
-            // 404 not found
-            if (marca == null)
+            Zona zona = db.Zonas.Find(id);
+            if (zona == null)
             {
                 return NotFound();
             }
 
-            return Ok(marca);
+            return Ok(zona);
         }
 
-        // PUT: api/MarcasAPI/5
+        // PUT: api/ZonasAPI/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutMarca(int id, Marca marca)
+        public IHttpActionResult PutZona(int id, Zona zona)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != marca.MarcaID)
+            if (id != zona.ZonaID)
             {
                 return BadRequest();
             }
 
-            db.Entry(marca).State = EntityState.Modified;
+            db.Entry(zona).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +58,7 @@ namespace Prisma.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MarcaExists(id))
+                if (!ZonaExists(id))
                 {
                     return NotFound();
                 }
@@ -73,35 +71,35 @@ namespace Prisma.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/MarcasAPI
-        [ResponseType(typeof(Marca))]
-        public IHttpActionResult PostMarca(Marca marca)
+        // POST: api/ZonasAPI
+        [ResponseType(typeof(Zona))]
+        public IHttpActionResult PostZona(Zona zona)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Marcas.Add(marca);
+            db.Zonas.Add(zona);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = marca.MarcaID }, marca);
+            return CreatedAtRoute("DefaultApi", new { id = zona.ZonaID }, zona);
         }
 
-        // DELETE: api/MarcasAPI/5
-        [ResponseType(typeof(Marca))]
-        public IHttpActionResult DeleteMarca(int id)
+        // DELETE: api/ZonasAPI/5
+        [ResponseType(typeof(Zona))]
+        public IHttpActionResult DeleteZona(int id)
         {
-            Marca marca = db.Marcas.Find(id);
-            if (marca == null)
+            Zona zona = db.Zonas.Find(id);
+            if (zona == null)
             {
                 return NotFound();
             }
 
-            db.Marcas.Remove(marca);
+            db.Zonas.Remove(zona);
             db.SaveChanges();
 
-            return Ok(marca);
+            return Ok(zona);
         }
 
         protected override void Dispose(bool disposing)
@@ -113,9 +111,9 @@ namespace Prisma.Controllers
             base.Dispose(disposing);
         }
 
-        private bool MarcaExists(int id)
+        private bool ZonaExists(int id)
         {
-            return db.Marcas.Count(e => e.MarcaID == id) > 0;
+            return db.Zonas.Count(e => e.ZonaID == id) > 0;
         }
     }
 }

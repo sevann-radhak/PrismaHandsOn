@@ -17,7 +17,7 @@
     <br />
     <br />
 
-    <input id="txtMarcaID" type="number" placeholder="ID" min="1" />
+    <input id="txtMarcaID" type="text" placeholder="ID" min="1" />
     <input id="txtMarcaCodigo" type="text" placeholder="Codigo" />
     <input id="txtMarcaNombre" type="text" placeholder="Nombre" />
 
@@ -32,11 +32,11 @@
 }
 
 @section Scripts
-{
+    {
     <script type="text/javascript">
         $(function () {
 
-            // Capture all buttons 
+            // Capture all buttons
             // Get all Marcas
             $('#btnGetMarcas').on('click', function () {
                 // Send AJAX call
@@ -47,11 +47,16 @@
                     cache: false,
                     success: (function (data) {
                         var outPut = '';
-                        for (var i = 0; i < data.length; i++) {
-                            outPut += '<hr /> <br>';
-                            outPut += '<b>MarcaID: </b>' + data[i].MarcaID + '<br>';
-                            outPut += '<b>Código: </b>' + data[i].Codigo + '<br>';
-                            outPut += '<b>Nombre: </b>' + data[i].Nombre + '<br>';
+                        if (data.length == 0) {
+                            outPut += 'No se encontraron resultados';
+                        }
+                        else {
+                            for (var i = 0; i < data.length; i++) {
+                                outPut += '<hr />  <br>';
+                                outPut += '<b>MarcaID: </b>' + data[i].MarcaID + '<br>';
+                                outPut += '<b>Código: </b>' + data[i].Codigo + '<br>';
+                                outPut += '<b>Nombre: </b>' + data[i].Nombre + '<br>';
+                            }
                         }
                         $("#lblMessage").html(outPut);
                     }),
@@ -90,7 +95,19 @@
                         }
                     }),
                     error: (function (err) {
-                        $("#lblMessage").html("Ocurrió un error: " + JSON.stringify(err.status) + '. ' + JSON.stringify(err.statusText));
+                        // Capturate the error code and name
+                        var errorCode = JSON.stringify(err.status);
+                        var errorName = JSON.stringify(err.errorName);
+
+                        // Validate if error if bad request
+                        if (errorCode == 400) {
+                            var messageError = 'Los datos enviados no cumplen los requerimientos.';
+                        }
+                        else {
+                            var messageError = errorCode + '. ' + errorName;
+                        }
+
+                        $("#lblMessage").html("Ocurrió un error: " + messageError);
                     })
                 });
                 return false;
@@ -169,7 +186,7 @@
                 // Send AJAX call
                 $.ajax({
                     type: "PUT",
-                    url: '/api/MarcasAPI/' + 18,
+                    url: '/api/MarcasAPI/' + marcaID,
                     datatype: 'json',
                     data: marca,
                     cache: false,
@@ -177,7 +194,22 @@
                         $("#lblMessage").html('<h1>Objeto actualizado exitosamente</h1>');
                     }),
                     error: (function (err) {
-                        $("#lblMessage").html("Ocurrió un error: " + JSON.stringify(err.status) + '. ' + JSON.stringify(err.statusText));
+                        // Capturate the error code and name
+                        var errorCode = JSON.stringify(err.status);
+                        var errorName = JSON.stringify(err.errorName);
+
+                        // Validate if error if bad request
+                        if (errorCode == 400) {
+                            var messageError = 'Los datos enviados no cumplen los requerimientos.';
+                        }
+                        else if (errorCode == 404) {
+                            var messageError = 'El elemento no fue encontrado';
+                        }
+                        else {
+                            var messageError = errorCode + '. ' + errorName;
+                        }
+
+                        $("#lblMessage").html("Ocurrió un error: " + messageError);
                     })
                 });
                 return false;
@@ -199,7 +231,7 @@
                     cache: false,
                     success: (function (data) {
                         if (data != null) {
-                            var outPut = '<h1>Marca eliminada correctamente</h1>' + 
+                            var outPut = '<h1>Marca eliminada correctamente</h1>' +
                                 '<b>MarcaID: </b>' + data.MarcaID + '<br>' +
                                 '<b>Código: </b>' + data.Codigo + '<br>' +
                                 '<b>Nombre: </b>' + data.Nombre + '<br>';
